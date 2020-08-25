@@ -34,15 +34,54 @@ exports.loadFile = (req,res,next) =>{
     return next();
   })
 }
-
+//Agregar aplicacion a la BD
 exports.addApp = async (req,res,next) =>{
   try {
-    if(req.file.filename){
-      application.image = req.file.filename
-    }
+    const image = req.file.filename;
     const {category,name,price} = req.body;
-    const application = await Application.create(category,name,price,application.image);
+    await Application.create({category,name,price,image});
     res.json({mensaje:'Se agrego nueva app'})
+  } catch (error) {
+    console.log(error);
+    next();
+  }
+}
+
+
+exports.getApps = async (req,res,next) =>{
+  try {
+    const apps = await Application.findAll({});
+    res.json(apps);
+  } catch (error) {
+    console.log(error);
+    next();
+  }
+}
+
+exports.updateApp = async (req,res,next) =>{
+  try {
+    const image = req.file.filename;
+    const {price} = req.body;
+
+    await Application.update(
+      {price,image},
+      {where: {id: req.params.idApp}}
+    );
+    res.json({mensaje:'Aplicacion actualizada'})
+  } catch (error) {
+    console.log(error);
+    next();
+  }
+}
+
+exports.deleteApp = async (req,res,next) =>{
+  try {
+    await Application.destroy(
+      {where: {id:req.params.idApp}}
+    );
+    
+    res.json({mensaje:'Aplicacion eliminada'});
+
   } catch (error) {
     console.log(error);
     next();

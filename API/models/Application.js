@@ -10,7 +10,7 @@ const Application = db.define('app',{
   category: Sequelize.STRING(100),
   name: Sequelize.STRING(100),
   price:Sequelize.DOUBLE,
-  image: Sequelize.SMALLINT(100)
+  image: Sequelize.STRING(100)
 })
 
 
