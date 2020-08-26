@@ -22,6 +22,7 @@ app.use(express.json({extended:true}));
 
 //habilitar routing
 app.use('/api',routes());
+
 app.listen(5000, () =>{
   console.log('Servidor funcionando en el puerto 5000');
 })

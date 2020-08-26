@@ -13,7 +13,7 @@ module.exports = function(){
   /**CRUD Aplicaciones */
 
   /**Usuarios */
-  router.post('/users/',
+  router.post('/users',
     [
       check('role','El rol es obligatorio').not().isEmpty(),
       check('email','Agrega un email valido').isEmail(),
@@ -23,15 +23,10 @@ module.exports = function(){
     userController.signUp);
 
   //rutas para autenticar usuarios
-  router.post('/auth/',
-  [
-    check('email','Ingresa un email valido').isEmail(),
-    check('password','El password debe ser minimo de 6 caracteres').isLength({min:6})
-  ],
-  authController.authUser
-  ); 
-  
-  router.get('/auth/',
+  //Iniciar sesion
+  router.post('/auth',authController.authUser); 
+
+  router.get('/auth',
     auth,
     authController.userAuth
   );

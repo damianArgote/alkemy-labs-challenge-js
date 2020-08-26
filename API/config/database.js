@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 
-module.exports = new Sequelize('playstore','root','root',{
+module.exports = new Sequelize('playstore','root','',{
     host:'localhost',
     dialect:'mysql',
     define:{

@@ -155,8 +155,8 @@ const Signup = (props) => {
                     </div>
                 </form>
     
-                <Link to={'/'}>
-                    Volver a Login
+                <Link to={'/apps'}>
+                    Volver a Home
                 </Link>
             </div>
          );
