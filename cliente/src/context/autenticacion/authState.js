@@ -96,6 +96,12 @@ const AuthState = props =>{
         }
     }
 
+    const logout = () =>{
+        dispatch({
+            type:CERRAR_SESION
+        })
+    }
+
 
     return(
         <AuthContext.Provider
@@ -106,7 +112,8 @@ const AuthState = props =>{
                 mensaje:state.mensaje,
                 signUpUser,
                 login,
-                userAuth
+                userAuth,
+                logout
             }}
         >{props.children}
 

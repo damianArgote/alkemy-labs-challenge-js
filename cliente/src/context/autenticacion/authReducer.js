@@ -22,16 +22,19 @@ export default (state,action) =>{
         case OBTENER_USER:
             return{
                 ...state,
+                autenticado:true,
                 user: action.payload
             }
-
-        case LOGIN_ERROR:
         
+        case CERRAR_SESION:
+        case LOGIN_ERROR:
         case REGISTRO_ERROR:
             localStorage.removeItem('token');
             return {
                 ...state,
                 toke:null,
+                user:null,
+                autenticado:null,
                 mensaje:action.payload
             }
 
