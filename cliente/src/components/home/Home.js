@@ -1,24 +1,21 @@
-import React from 'react'
+import React,{Fragment} from 'react';
 import {Link} from 'react-router-dom';
 
+import ListApps from '../aplicaciones/ListApps';
+
 const Home = () => {
-  return ( 
-      <div>
-        <div>
-          <Link to={'/signup'}>
-                  Registrarse
-          </Link>
+    return ( 
+        <Fragment>
+            <div>
+                <Link to="/signup">Registrarse</Link>
+                <Link to="/login">Iniciar Sesion</Link>
+            </div>
 
-          <Link to={'/login'}>
-                Iniciar sesion
-          </Link>
-
-        </div>
-
-        <h1>Desde Home</h1>
-
-      </div>
-   );
+            <h1>Bienvenidos a PlayStore</h1>
+            {/*listar todas las aplicaciones*/}
+            <ListApps/>
+        </Fragment>
+     );
 }
-
+ 
 export default Home;

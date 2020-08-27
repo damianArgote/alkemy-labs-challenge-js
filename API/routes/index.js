@@ -8,9 +8,24 @@ const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 
 const {check} = require('express-validator');
+const { Router } = require('express');
 
 module.exports = function(){
   /**CRUD Aplicaciones */
+
+  router.get('/apps', applicationController.getAll);
+
+  router.post('/apps',
+    applicationController.loadFile,
+    applicationController.addApp);
+  
+  router.delete('/apps/:idApp', applicationController.deleteApp);
+
+  router.get('/apps/:idApp',applicationController.getApp);
+
+  router.put('/apps/:idApp', 
+    applicationController.loadFile,
+    applicationController.editApp);
 
   /**Usuarios */
   router.post('/users',

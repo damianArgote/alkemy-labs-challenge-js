@@ -3,6 +3,7 @@ const Application = require('../models/Application');
 const multer = require('multer');
 const shortid = require('shortid');
 
+//Configuracion de multer
 const configMulter = {
   storage: fileStorage = multer.diskStorage({
     destination: (req,file,cb) =>{
@@ -34,43 +35,59 @@ exports.loadFile = (req,res,next) =>{
     return next();
   })
 }
+
 //Agregar aplicacion a la BD
-exports.addApp = async (req,res,next) =>{
+exports.addApp = async (req,res) =>{
   try {
     const image = req.file.filename;
     const {category,name,price} = req.body;
+
+    //relacionar usuario via jwt
+    //const userId = req.user.id;
+
     await Application.create({category,name,price,image});
     res.json({mensaje:'Se agrego nueva app'})
   } catch (error) {
     console.log(error);
-    next();
+    res.status(500).send('Hubo un error');
   }
 }
 
-
-exports.getApps = async (req,res,next) =>{
+//Obtener todas las aplicaciones
+exports.getAll = async (req,res) =>{
   try {
-    const apps = await Application.findAll({});
+    const apps = await Application.findAll();
     res.json(apps);
   } catch (error) {
     console.log(error);
-    next();
+    res.status(400).send('No se pudo obtener el array');
   }
 }
 
-exports.updateApp = async (req,res,next) =>{
+//Obtener aplicacion por id
+exports.getApp = async(req,res,next) =>{
+  try {
+    const app = await Application.findByPk(req.params.idApp);
+    res.json(app);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+//Editar aplicacion por id
+exports.editApp = async (req,res) =>{
   try {
     const image = req.file.filename;
     const {price} = req.body;
-
     await Application.update(
-      {price,image},
+      { price,
+        image
+      },
       {where: {id: req.params.idApp}}
     );
     res.json({mensaje:'Aplicacion actualizada'})
   } catch (error) {
     console.log(error);
-    next();
   }
 }
 

@@ -23,6 +23,9 @@ app.use(express.json({extended:true}));
 //habilitar routing
 app.use('/api',routes());
 
+//archivos publicos
+app.use(express.static('uploads'));
+
 app.listen(5000, () =>{
   console.log('Servidor funcionando en el puerto 5000');
 })
