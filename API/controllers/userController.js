@@ -1,46 +1,61 @@
 const User = require('../models/User');
-const {validationResult} =require('express-validator');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 exports.signUp = async (req,res) =>{
-
-    //revisar si hay errores
-    const errors = validationResult(req);
-    if(!errors.isEmpty()){
-        return res.status(400).json({errores: errors.array()});
-    }
     
     try {
         //extraer datos
-        const {role,email,username,password} = req.body;
-        //revisar el usuario si ya esta registrado
+        const {role,username,email,password} = req.body;
+        //verificar si existe el usuario
         let user = await User.findOne({where: {email}});
+
         if(user){
-           return res.status(400).json({msg:'El usuario ya existe'}); 
+            return res.status(400).json({mensaje:'El usuario ya existe'});
         }
-        //Si no existe crearlo
-        const newUser = await User.create({role,email,username,password});
-
-        //Crear y firmar JWT
-        const payload = {
-            user:{
-                id: newUser.id
-            }
-        };
-
-        //firmar el token
-        jwt.sign(payload, 'secreto',{
-            expiresIn: 3600// 1hora
-        }, (error,token) =>{
-            if(error) throw error;
-            //mensaje de confirmacion
-            res.json({token});
-
-        });
-
+        
+        await User.create({role,username,email,password});
+        
+        res.json({mensaje:'Usuario registrado'});
 
     } catch (error) {
         console.log(error);
-        res.status(400).send('Hubo un error');
+        res.status(400).json({mensaje:'Hubo un error'});
+    }
+}
+
+exports.authenticate = async (req,res,next) => {
+    try {
+        const {email,password} = req.body;
+        //buscar usuario
+        const user = await User.findOne({where: {email}});
+
+        if(!user){
+            await res.status(401).json({mensaje:'El usuario no existe'});
+            next();
+            
+        }
+        //revisar password
+        if(!user.checkPassword(password)){
+            await res.status(401).json({mensaje:'Password incorrecto'});
+            next();
+        }
+         //Si todo es correcto
+        //Crear y firmar JWT
+        const payload = {
+           email:user.email,
+           username:user.username,
+           role:user.role,
+           id:user.id
+        };
+
+        const token = jwt.sign(payload, 'secreto',{
+            expiresIn: 3600// 1hora
+        });
+
+        res.json({token});
+ 
+    } catch (error) {
+        console.log(error);
+        next();
     }
 }

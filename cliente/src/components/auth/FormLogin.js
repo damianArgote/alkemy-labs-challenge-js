@@ -1,8 +1,52 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
+import Swal from 'sweetalert2';
+import clientAxios from '../../config/axios';
+import {Link, withRouter} from 'react-router-dom';
 
-import {Link} from 'react-router-dom';
+const FormLogin = (props) => {
 
-const FormLogin = () => {
+  const [credentials, setCredentials] = useState({});
+   //iniciar sesion en el server
+   const onSubmit = async e =>{
+    e.preventDefault()
+
+    try {
+
+      const resp =  await clientAxios.post('/api/users/login',credentials);
+      
+      const {token} = resp.data;
+      localStorage.setItem('token',token);
+
+      //alerta
+      Swal.fire(
+        'Login Correcto',
+        'Has iniciado sesion',
+        'success'
+      )
+
+      //redireccionar
+      props.history.push('/');
+      
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        type:'error',
+        title:'Hubo un error',
+        text: error.response.data.mensaje
+      })
+    }
+  }
+  
+  //guardar ne el state
+  const onChange = e =>{
+    setCredentials({
+      ...credentials,
+      [e.target.name] : e.target.value
+    })
+  }
+ 
+
+
   return (
 
     <Fragment>
@@ -11,11 +55,14 @@ const FormLogin = () => {
 
         <form
 
+          onSubmit={onSubmit}
+
         >
           <div className="campo">
             <input
               type="email"
               name="email"
+              onChange={onChange}
             />
             <label htmlFor="email">Email</label>
           </div>
@@ -24,6 +71,7 @@ const FormLogin = () => {
             <input
               type="password"
               name="password"
+              onChange={onChange}
             />
             <label htmlFor="password">Password</label>
           </div>
@@ -51,4 +99,4 @@ const FormLogin = () => {
   );
 }
 
-export default FormLogin;
+export default withRouter(FormLogin);

@@ -1,7 +1,7 @@
 const express = require('express');
 const routes = require('./routes');
 const cors = require('cors');
-
+const bodyParser = require('body-parser');
 
 //crea conexion a database
 const db = require('./config/database');
@@ -19,6 +19,10 @@ app.use(cors());
 
 //Habilitar express.json
 app.use(express.json({extended:true}));
+
+//bodyparser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
 
 //habilitar routing
 app.use('/api',routes());

@@ -43,6 +43,16 @@ const FormSignUp = () => {
             <label htmlFor="confirm">Repetir Password</label>
           </div>
 
+          <div className="campo">
+            <select
+              name="role"
+            >
+              <option value="">-Seleccionar Rol-</option>
+              <option value="Cliente">Cliente</option>
+              <option value="Desarrollador">Desarrollador</option>
+            </select>
+          </div>
+
           <div className="submit">
             <input
               type="submit"

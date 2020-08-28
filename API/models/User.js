@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('../config/database');
 const bcrypt = require('bcrypt-nodejs');
 const Application = require('./Application');
-const passport = require('passport');
+
 
 const User = db.define('user',{
     id:{
@@ -11,12 +11,12 @@ const User = db.define('user',{
         autoIncrement:true
       },
     role: Sequelize.STRING(20),
-    email:{
-        type: Sequelize.STRING(60),
-        allowNull:false
-    },
     username:{
         type:Sequelize.STRING(60),
+        allowNull:false
+    },
+    email:{
+        type: Sequelize.STRING(60),
         allowNull:false
     },
     password:{
