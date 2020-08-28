@@ -77,15 +77,29 @@ exports.getApp = async(req,res,next) =>{
 //Editar aplicacion por id
 exports.editApp = async (req,res) =>{
   try {
-    const image = req.file.filename;
-    const {price} = req.body;
-    await Application.update(
-      { price,
-        image
-      },
-      {where: {id: req.params.idApp}}
-    );
-    res.json({mensaje:'Aplicacion actualizada'})
+      let app = await Application.findByPk(req.params.idApp);
+      const image = req.file.filename;
+      const {price} = req.body;
+
+      if(image === app.image){
+        await Application.update(
+          { price
+          },
+          {where: {id: req.params.idApp}}
+        );
+        res.json({mensaje:'Aplicacion actualizada'})
+        return;
+      }
+      console.log(image);
+      await Application.update(
+        { price,
+          image
+        },
+        {where: {id: req.params.idApp}}
+      );
+      res.json({mensaje:'Aplicacion actualizada'})
+
+    
   } catch (error) {
     console.log(error);
   }

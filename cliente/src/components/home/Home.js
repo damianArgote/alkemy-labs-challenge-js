@@ -6,14 +6,20 @@ import ListApps from '../aplicaciones/ListApps';
 const Home = () => {
     return ( 
         <Fragment>
-            <div>
-                <Link to="/signup">Registrarse</Link>
-                <Link to="/login">Iniciar Sesion</Link>
-            </div>
+            <div className="contenedor">
+                <div>
+                    <Link to="/signup">Registrarse</Link>
+                    <Link to="/login">Iniciar Sesion</Link>
+                </div>
+                <div className="contenido-principal">
+                    <h1>Bienvenidos a PlayStore</h1>
+                    {/*listar todas las aplicaciones*/}
+                    <ListApps/>
+                </div>
+                
 
-            <h1>Bienvenidos a PlayStore</h1>
-            {/*listar todas las aplicaciones*/}
-            <ListApps/>
+            </div>
+            
         </Fragment>
      );
 }

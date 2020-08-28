@@ -8,8 +8,6 @@ const EditApp = (props) => {
     //obtener id
     const {id} = props.match.params;
 
-    
-
     //state
     const [app, setApp] = useState({
         category:'',

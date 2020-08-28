@@ -39,23 +39,29 @@ const Application = ({app}) => {
 
   return (
     <Fragment>
-      <li>
-        <h3>{category}</h3>
-        <p>{name}</p>
+      <div className="entrada">
         
         {image ? (
           <img src={`http://localhost:5000/${image}`}/>
         ) : null }
 
-        <p>{price}</p>
-        <Link to={`/apps/edit/${id}`}>Editar</Link>
-        <Link to="#">Comprar</Link>
-        <button
-          onClick={() => deleteApp(id)}
-        >
-          Eliminar
-        </button>
-      </li>
+        <div className="contenido">
+          <h3>{category}</h3>
+          <p>{name}</p>
+
+          <p>Precio: <span>${price}</span></p>
+          <Link to={`/apps/edit/${id}`} className="boton">Editar</Link>
+          <Link to="#" className="boton">Comprar</Link>
+          <button
+            className="boton"
+            onClick={() => deleteApp(id)}
+          >
+            Eliminar
+          </button>
+
+        </div>
+        
+      </div>
 
   
     </Fragment>

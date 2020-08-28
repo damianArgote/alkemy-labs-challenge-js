@@ -22,7 +22,6 @@ const ListApps = () => {
     return ( 
 
         <Fragment>
-            <ul>
                 {apps.map(app =>(
                     <Application
                         key={app.id}
@@ -30,7 +29,6 @@ const ListApps = () => {
                     />
                     
                 ))}
-            </ul>
         </Fragment>
 
 
