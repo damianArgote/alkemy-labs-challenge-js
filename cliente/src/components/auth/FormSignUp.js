@@ -1,60 +1,66 @@
-import React,{Fragment} from 'react';
+import React, { Fragment } from 'react';
+import {Link} from 'react-router-dom';
 
 const FormSignUp = () => {
-    return ( 
-        <Fragment>
-            <div>Crea tu cuenta en PlayStore</div>
+  return (
+    <Fragment>
+      <main className="formulario-login contenedor">
 
-            <form
-                method="POST"
-            >
-                <div>
-                    <label htmlFor="username">Username:</label>
-                    <input
-                        type="text"
-                        name="username"
-                        placeholder="Tu Username"
-                    />
-                </div>
+        <h1>Crea tu cuenta en PlayStore</h1>
 
-                <div>
-                    <label htmlFor="email">Email:</label>
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Tu Email"
-                    />
-                </div>
+        <form
+          method="POST"
+        >
+          <div className="campo">
+            <input
+              type="text"
+              name="username"
+            />
+            <label htmlFor="username">Username</label>
+          </div>
 
-                <div>
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Tu Password"
-                    />
-                </div>
+          <div className="campo">
+            <input
+              type="email"
+              name="email"
+            />
+            <label htmlFor="email">Email</label>
+          </div>
 
-                <div>
-                    <label htmlFor="confirm">Repetir Password</label>
-                    <input
-                        type="password"
-                        name="confirm"
-                        placeholder="Confirma tu Password"
-                    />
-                </div>
+          <div className="campo">
+            <input
+              type="password"
+              name="password"
+            />
+            <label htmlFor="password">Password</label>
+          </div>
 
-                <div>
-                    <input
-                        type="submit"
-                        value="Registrarse"
-                    />
-                </div>
+          <div className="campo">
+            <input
+              type="password"
+              name="confirm"
+            />
+            <label htmlFor="confirm">Repetir Password</label>
+          </div>
 
+          <div className="submit">
+            <input
+              type="submit"
+              value="Registrarse"
+            />
+          </div>
+        </form>
 
-            </form>
-        </Fragment>
-     );
+        <div className="contenido-inferior">
+          <p className="nuevo-usuario">
+            <Link to="/">Volver</Link> 
+          </p>
+        </div>
+
+      </main>
+
+    </Fragment>
+  );
 }
- 
+
 export default FormSignUp;

@@ -1,44 +1,54 @@
-import React,{Fragment} from 'react';
+import React, { Fragment } from 'react';
+
+import {Link} from 'react-router-dom';
 
 const FormLogin = () => {
-    return ( 
+  return (
 
-        <Fragment>
-            <div>Inicia Sesion en PlayStore</div>
+    <Fragment>
+      <main className="formulario-login contenedor">
+        <h1>Inicia Sesion en PlayStore</h1>
 
-            <form
-                method="POST"
-            >
-                <div>
-                    <label htmlFor="email">Email:</label>
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Tu Email"
-                    />
-                </div>
+        <form
 
-                <div>
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Tu Password"
-                    />
-                </div>
+        >
+          <div className="campo">
+            <input
+              type="email"
+              name="email"
+            />
+            <label htmlFor="email">Email</label>
+          </div>
 
-                <div>
-                    <input
-                        type="submit"
-                        value="Iniciar Sesion"
-                    />
-                </div>
+          <div className="campo">
+            <input
+              type="password"
+              name="password"
+            />
+            <label htmlFor="password">Password</label>
+          </div>
+
+          <div className="submit">
+            <input
+              type="submit"
+              value="Iniciar Sesion"
+            />
+          </div>
 
 
-            </form>
-        </Fragment>
+        </form>
 
-     );
+        <div className="contenido-inferior">
+          <p className="nuevo-usuario">
+                ¿Primera vez? <Link to="/signup">Crear Cuenta</Link> 
+          </p>
+        </div>
+
+      </main>
+
+    </Fragment>
+
+  );
 }
- 
+
 export default FormLogin;
