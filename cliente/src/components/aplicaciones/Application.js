@@ -47,7 +47,7 @@ const Application = ({app}) => {
 
         <div className="contenido">
           <h3>{category}</h3>
-          <p>{name}</p>
+          <h3>{name}</h3>
 
           <p>Precio: <span>${price}</span></p>
           <Link to={`/apps/edit/${id}`} className="boton">Editar</Link>
