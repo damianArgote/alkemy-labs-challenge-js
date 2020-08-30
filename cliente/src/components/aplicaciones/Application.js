@@ -1,10 +1,9 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import Swal from 'sweetalert2';
-
 import clientAxios from '../../config/axios';
 
-const Application = ({app}) => {
+const Application = ({aplicacion}) => {
 
   //eliminar aplicacion
   const deleteApp = id =>{
@@ -33,15 +32,14 @@ const Application = ({app}) => {
       }
     })
   }
+  const {id,category,name,price,image} = aplicacion;
 
-
-  const {id,category,name,price,image} = app;
 
   return (
     <Fragment>
       <div className="entrada">
         
-        {image ? (
+        {aplicacion.image ? (
           <img src={`http://localhost:5000/${image}`}/>
         ) : null }
 
@@ -52,6 +50,7 @@ const Application = ({app}) => {
           <p>Precio: <span>${price}</span></p>
           <Link to={`/apps/edit/${id}`} className="boton">Editar</Link>
           <Link to="#" className="boton">Comprar</Link>
+          <Link to={`/apps/${id}`} className="boton">Detalles</Link>
           <button
             className="boton"
             onClick={() => deleteApp(id)}

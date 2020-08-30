@@ -1,7 +1,7 @@
 const Application = require('../models/Application');
-
 const multer = require('multer');
 const shortid = require('shortid');
+const jwt = require('jsonwebtoken');
 
 //Configuracion de multer
 const configMulter = {
@@ -41,12 +41,12 @@ exports.addApp = async (req,res) =>{
   try {
     const image = req.file.filename;
     const {category,name,price} = req.body;
-
+    
     //relacionar usuario via jwt
-    //const userId = req.user.id;
-
-    await Application.create({category,name,price,image});
-    res.json({mensaje:'Se agrego nueva app'})
+    const userId = req.user.id;
+    
+    const app = await Application.create({category,name,price,image,userId});
+    res.json({app});
   } catch (error) {
     console.log(error);
     res.status(500).send('Hubo un error');
@@ -64,57 +64,81 @@ exports.getAll = async (req,res) =>{
   }
 }
 
-//Obtener aplicacion por id
-exports.getApp = async(req,res,next) =>{
+//obtener aplicaciones del usuario
+exports.getUserApp = async (req,res) =>{
   try {
-    const app = await Application.findByPk(req.params.idApp);
-    res.json(app);
+    const userApps = await Application.findAll({
+      where: {
+        userId: req.user.id
+      }
+    });
+    res.json(userApps);
   } catch (error) {
     console.log(error);
+    res.status(500).send('Hubo un error');
   }
 }
 
 //Editar aplicacion por id
 exports.editApp = async (req,res) =>{
-  try {
-      let app = await Application.findByPk(req.params.idApp);
-      const image = req.file.filename;
-      const {price} = req.body;
+    
+  try{
+    //revisar id
+    let app = await Application.findByPk(req.params.idApp);
+    //verificar si la app existe
+    if(!app){
+      return res.status(404).json({mensaje:'Aplicacion no encontrada'});
+    }
 
-      if(image === app.image){
-        await Application.update(
-          { price
-          },
-          {where: {id: req.params.idApp}}
-        );
-        res.json({mensaje:'Aplicacion actualizada'})
-        return;
-      }
-      console.log(image);
-      await Application.update(
-        { price,
-          image
-        },
-        {where: {id: req.params.idApp}}
-      );
-      res.json({mensaje:'Aplicacion actualizada'})
+    //extraer info app
+    const image = req.file.filename;
+    const {price} = req.body;
+
+    //verificar el usuario
+    if(app.userId !== req.user.id){
+      return res.status(401).json({mensaje:'No autorizado'});
+    }
+    //actualizar
+    await Application.update(
+      { price,
+        image
+      },
+      {where: {id: req.params.idApp}}
+    );
+
+        res.json({mensaje:'Aplicacion actualizada'});
 
     
   } catch (error) {
     console.log(error);
+    res.status(500).send('Error en el servidor');
   }
 }
+//Eliminar aplicacion por id
 
 exports.deleteApp = async (req,res,next) =>{
   try {
+    //revisar id
+    let app = await Application.findByPk(req.params.idApp);
+    //verificar si la app existe
+    if(!app){
+      return res.status(404).json({msg:'Aplicacion no encontrada'});
+    }
+
+    //verificar el usuario
+    if(app.userId !== req.user.id){
+      return res.status(401).json({msg:'No autorizado'});
+    }
+
+    //eliminar la app
     await Application.destroy(
       {where: {id:req.params.idApp}}
     );
     
-    res.json({mensaje:'Aplicacion eliminada'});
+    res.json({msg:'Aplicacion eliminada'});
 
   } catch (error) {
     console.log(error);
-    next();
+    res.status(500).send('Error en el servidor');
   }
 }

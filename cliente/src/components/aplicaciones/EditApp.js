@@ -10,8 +10,6 @@ const EditApp = (props) => {
 
     //state
     const [app, setApp] = useState({
-        category:'',
-        name:'',
         price:'',
         image:''    
     })
@@ -35,9 +33,6 @@ const EditApp = (props) => {
 
         //crear un formdata
         const formData = new FormData();
-
-        formData.append('category', app.category);
-        formData.append('name', app.name);
         formData.append('price',app.price);
         formData.append('image',file);
 
@@ -89,7 +84,7 @@ const EditApp = (props) => {
     }
 
     //extraer valores del state
-    const {category,name,price,image} = app;
+    const {price,image} = app;
 
 
 

@@ -35,6 +35,6 @@ User.prototype.checkPassword = function(password){
     return bcrypt.compareSync(password, this.password);
 }
 
-//User.hasMany(Application);
+User.hasMany(Application);
 
 module.exports=User;

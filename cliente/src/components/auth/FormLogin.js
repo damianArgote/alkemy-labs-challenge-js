@@ -1,48 +1,55 @@
-import React, { Fragment, useState } from 'react';
-import Swal from 'sweetalert2';
-import clientAxios from '../../config/axios';
-import {Link, withRouter} from 'react-router-dom';
+import React, { Fragment, useState,useContext,useEffect } from 'react';
+import {Link} from 'react-router-dom';
+
+import AlertaContext from '../../context/alertas/alertaContext';
+import AuthContext from '../../context/autenticacion/authContext';
 
 const FormLogin = (props) => {
 
-  const [credentials, setCredentials] = useState({});
-   //iniciar sesion en el server
-   const onSubmit = async e =>{
-    e.preventDefault()
+  const alertaContext = useContext(AlertaContext);
+  const {alerta,mostrarAlerta} = alertaContext;
 
-    try {
+  const authContext = useContext(AuthContext);
 
-      const resp =  await clientAxios.post('/api/users/login',credentials);
+  const {mensaje,autenticado,login} = authContext;
+
+    useEffect(() =>{
       
-      const {token} = resp.data;
-      localStorage.setItem('token',token);
+      if(autenticado){
+        //mandar a /me/apps
+        props.history.push('/me/apps');
+      }
+  
+      if(mensaje){
+        mostrarAlerta(mensaje.msg,'alerta-error');
+      }
+  
+    },[mensaje,autenticado,props.history])
 
-      //alerta
-      Swal.fire(
-        'Login Correcto',
-        'Has iniciado sesion',
-        'success'
-      )
+  const [user,setUser] = useState({
+    email:'',
+    password:''
+  });
 
-      //redireccionar
-      props.history.push('/');
-      
-    } catch (error) {
-      console.log(error);
-      Swal.fire({
-        type:'error',
-        title:'Hubo un error',
-        text: error.response.data.mensaje
-      })
-    }
+  const {email,password} = user;
+
+  const onChange = e =>{
+    setUser({
+      ...user,
+      [e.target.name]:e.target.value
+    })
   }
   
-  //guardar ne el state
-  const onChange = e =>{
-    setCredentials({
-      ...credentials,
-      [e.target.name] : e.target.value
-    })
+  const onSubmit = e =>{
+    e.preventDefault();
+
+    //validar campos
+    if(email.trim() === '' || password.trim() === ''){
+      mostrarAlerta('Todos los campos son obligatorios', 'alerta-error');
+    }
+
+    //pasar al action
+    login({email,password});
   }
  
 
@@ -52,7 +59,9 @@ const FormLogin = (props) => {
     <Fragment>
       <main className="formulario-login contenedor">
         <h1>Inicia Sesion en PlayStore</h1>
-
+        {alerta ? (<div className={`alerta ${alerta.categoria}`}>
+          {alerta.msg}
+        </div>) : null}
         <form
 
           onSubmit={onSubmit}
@@ -62,6 +71,7 @@ const FormLogin = (props) => {
             <input
               type="email"
               name="email"
+              value={email}
               onChange={onChange}
             />
             <label htmlFor="email">Email</label>
@@ -71,6 +81,7 @@ const FormLogin = (props) => {
             <input
               type="password"
               name="password"
+              value={password}
               onChange={onChange}
             />
             <label htmlFor="password">Password</label>
@@ -90,6 +101,7 @@ const FormLogin = (props) => {
           <p className="nuevo-usuario">
                 ¿Primera vez? <Link to="/signup">Crear Cuenta</Link> 
           </p>
+          <Link to="/">Inicio</Link>
         </div>
 
       </main>
@@ -99,4 +111,4 @@ const FormLogin = (props) => {
   );
 }
 
-export default withRouter(FormLogin);
+export default FormLogin;

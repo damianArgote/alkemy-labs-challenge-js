@@ -1,7 +1,13 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const {validationResult} = require('express-validator');
 
 exports.signUp = async (req,res) =>{
+    //revisar errores
+    const errores = validationResult(req);
+    if(!errores.isEmpty()){
+        return res.status(400).json({errores:errores.array()});
+    }
     
     try {
         //extraer datos
@@ -10,52 +16,86 @@ exports.signUp = async (req,res) =>{
         let user = await User.findOne({where: {email}});
 
         if(user){
-            return res.status(400).json({mensaje:'El usuario ya existe'});
+            return res.status(400).json({msg:'El usuario ya existe'});
         }
         
-        await User.create({role,username,email,password});
-        
-        res.json({mensaje:'Usuario registrado'});
+        const newUser = await User.create({role,username,email,password});
+
+        //crear y firmar jwt
+        const payload = {
+            user:{
+                id:newUser.id
+            }
+        };
+
+        jwt.sign(payload,'secreto',{
+            expiresIn:3600 //1hora
+        }, (error,token) =>{
+            if(error) throw error;
+
+            res.json({token});
+        });
+
 
     } catch (error) {
         console.log(error);
-        res.status(400).json({mensaje:'Hubo un error'});
+        res.status(400).json({msg:'Hubo un error'});
     }
 }
-
+//autenticar usuario
 exports.authenticate = async (req,res,next) => {
+    const errores = validationResult(req);
+    if(!errores.isEmpty()){
+        return res.status(400).json({errores:errores.array()});
+    }
+    
     try {
         const {email,password} = req.body;
         //buscar usuario
         const user = await User.findOne({where: {email}});
 
         if(!user){
-            await res.status(401).json({mensaje:'El usuario no existe'});
-            next();
+            return res.status(401).json({msg:'El usuario no existe'});
+            
             
         }
         //revisar password
         if(!user.checkPassword(password)){
-            await res.status(401).json({mensaje:'Password incorrecto'});
-            next();
+            return res.status(401).json({msg:'Password incorrecto'});
+        
         }
          //Si todo es correcto
         //Crear y firmar JWT
         const payload = {
-           email:user.email,
-           username:user.username,
-           role:user.role,
-           id:user.id
+            user:{
+                id:user.id
+            }
         };
 
-        const token = jwt.sign(payload, 'secreto',{
-            expiresIn: 3600// 1hora
-        });
+        jwt.sign(payload,'secreto',{
+            expiresIn:3600 //1hora
+        }, (error,token) =>{
+            if(error) throw error;
 
-        res.json({token});
+            res.json({token});
+        });
  
     } catch (error) {
         console.log(error);
         next();
     }
+}
+
+//obtiene que usuario esta autenticado
+exports.getUser =  async (req,res,next) =>{
+    
+    try {
+        const user = await User.findByPk(req.user.id);
+        res.json({user});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({msg:'Hubo un error'});
+    }
+ 
+
 }

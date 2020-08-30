@@ -1,31 +1,25 @@
-import React,{Fragment, useEffect, useState} from 'react';
+import React,{Fragment, useContext, useEffect, useState} from 'react';
 import Application from './Application';
-
-import clientAxios from '../../config/axios';
+import AplicacionContext from '../../context/aplicaciones/aplicacionContext';
 
 const ListApps = () => {
 
-    const [apps, setApps] = useState([])
-
-    const getAPI = async () =>{
-        //console.log('consultando...');
-        const respApps = await clientAxios.get('/api/apps');
-        //console.log(respApps);
-        setApps(respApps.data);
-
-    }
+    const aplicacionContext = useContext(AplicacionContext);
+    const {aplicaciones,obtenerAplicaciones} = aplicacionContext;
 
     useEffect(() =>{
-        getAPI();
-    },[apps]);
+        obtenerAplicaciones();
+    },[aplicaciones])
+
+    if(aplicaciones.length === 0) return null;
 
     return ( 
 
         <Fragment>
-                {apps.map(app =>(
+                {aplicaciones.map(aplicacion =>(
                     <Application
-                        key={app.id}
-                        app={app}
+                        key={aplicacion.id}
+                        aplicacion={aplicacion}
                     />
                     
                 ))}
