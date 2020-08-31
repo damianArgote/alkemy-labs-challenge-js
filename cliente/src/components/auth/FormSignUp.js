@@ -38,6 +38,13 @@ const FormSignUp = (props) => {
 
 
   const onChange = e =>{
+
+    if(e.target.value !== ''){
+      e.target.nextElementSibling.classList.add('valido');
+    }else{
+      e.target.nextElementSibling.classList.remove('valido');
+    }
+    
     setUser({
       ...user,
       [e.target.name]:e.target.value
@@ -132,6 +139,7 @@ const FormSignUp = (props) => {
               <option value="Cliente">Cliente</option>
               <option value="Desarrollador">Desarrollador</option>
             </select>
+            <label htmlFor="role"></label>
           </div>
 
           <div className="submit">

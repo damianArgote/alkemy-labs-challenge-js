@@ -37,4 +37,5 @@ User.prototype.checkPassword = function(password){
 
 User.hasMany(Application);
 
+
 module.exports=User;

@@ -62,6 +62,12 @@ const FormApp = (props) => {
     //leer datos
     const infoApp = e =>{
 
+        if(e.target.value !== ''){
+            e.target.nextElementSibling.classList.add('valido');
+          }else{
+            e.target.nextElementSibling.classList.remove('valido');
+          }
+
         setApp({
             ...app,
             [e.target.name] : e.target.value
@@ -96,16 +102,17 @@ const FormApp = (props) => {
                         <option value="Red Social">Red Social</option>
                         <option value="Juegos">Juegos</option>
                     </select>
+                    <label htmlFor="category"></label>
                 </div>
 
                 <div className="campo">
                     <input
                         type="text"
-                        name="title"
+                        name="name"
                         value={name}
                         onChange={infoApp}
                     />
-                    <label htmlFor="title">Titulo</label>
+                    <label htmlFor="name">Titulo</label>
                 </div>
 
                 <div className="campo">

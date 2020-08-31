@@ -21,13 +21,17 @@ module.exports = function(){
     applicationController.loadFile,
     applicationController.addApp);
 
+  router.get('/apps/:idApp', applicationController.getApp);
+
   router.put('/apps/:idApp', 
     auth,
     applicationController.loadFile,
     applicationController.editApp);
     
-  router.delete('/apps/:idApp', 
+  router.delete('/apps/:idApp',
+    auth, 
     applicationController.deleteApp);
+
 
   /**Usuarios */
   //registrar usuarios

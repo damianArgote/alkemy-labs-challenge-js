@@ -1,25 +1,42 @@
-import React,{Fragment, useContext, useEffect, useState} from 'react';
+import React,{Fragment, useEffect, useState} from 'react';
 import Application from './Application';
-import AplicacionContext from '../../context/aplicaciones/aplicacionContext';
+import Carrito from '../carrito/Carrito';
+import clientAxios from '../../config/axios';
 
 const ListApps = () => {
 
-    const aplicacionContext = useContext(AplicacionContext);
-    const {aplicaciones,obtenerAplicaciones} = aplicacionContext;
+    const [apps,setApps] = useState([]);
 
+    const [carrito,agregarCarrito] = useState([]);
+
+ 
     useEffect(() =>{
-        obtenerAplicaciones();
-    },[aplicaciones])
+        const getAPI = async () =>{
+            const resp = await clientAxios.get('/api/apps');
+            setApps( resp.data);
+        }
 
-    if(aplicaciones.length === 0) return null;
+        getAPI();
+    },[apps])
+
+    if(apps.length === 0) return null;
 
     return ( 
 
         <Fragment>
-                {aplicaciones.map(aplicacion =>(
+                <Carrito
+                carrito={carrito}
+                agregarCarrito={agregarCarrito}
+                />
+
+                {apps.map(app =>(
                     <Application
-                        key={aplicacion.id}
-                        aplicacion={aplicacion}
+                        key={app.id}
+                        apps={apps}
+                        app={app}
+                        carrito={carrito}
+                        agregarCarrito={agregarCarrito}
+                        
                     />
                     
                 ))}

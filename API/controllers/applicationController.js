@@ -79,6 +79,18 @@ exports.getUserApp = async (req,res) =>{
   }
 }
 
+exports.getApp = async (req,res,next) =>{
+    try {
+      const app = await Application.findByPk(req.params.idApp);
+      res.json({app});
+
+    } catch (error) {
+      console.log(error);
+      return next();
+    }
+}
+
+
 //Editar aplicacion por id
 exports.editApp = async (req,res) =>{
     
@@ -93,20 +105,30 @@ exports.editApp = async (req,res) =>{
     //extraer info app
     const image = req.file.filename;
     const {price} = req.body;
+    if(image === undefined){
+      //verificar el usuario
+      await Application.update(
+        { price,
+          image:app.image
+        },
+        {where: {id: req.params.idApp}}
+      );
+        res.json({mensaje:'Aplicacion actualizada'});
+    }
 
     //verificar el usuario
-    if(app.userId !== req.user.id){
-      return res.status(401).json({mensaje:'No autorizado'});
-    }
-    //actualizar
     await Application.update(
       { price,
         image
       },
       {where: {id: req.params.idApp}}
     );
+      res.json({mensaje:'Aplicacion actualizada'});
 
-        res.json({mensaje:'Aplicacion actualizada'});
+
+
+
+
 
     
   } catch (error) {
@@ -126,9 +148,11 @@ exports.deleteApp = async (req,res,next) =>{
     }
 
     //verificar el usuario
+    /*
     if(app.userId !== req.user.id){
       return res.status(401).json({msg:'No autorizado'});
     }
+    */
 
     //eliminar la app
     await Application.destroy(
@@ -139,6 +163,6 @@ exports.deleteApp = async (req,res,next) =>{
 
   } catch (error) {
     console.log(error);
-    res.status(500).send('Error en el servidor');
+    next();
   }
 }

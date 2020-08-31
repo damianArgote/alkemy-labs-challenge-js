@@ -158,6 +158,10 @@ button{
 
 }
 
+.boton:hover{
+  cursor: pointer;
+}
+
 @media (min-width: 768px) {
   .formulario-login {
     max-width: 420px;
@@ -192,7 +196,28 @@ form .campo label {
   transition: font-size .2s ease, top .2s ease;
 }
 
+form .campo label.valido {
+  font-size: .6rem;
+  top: .5rem;
+}
+
 form .campo input {
+  flex: 1;
+  padding: 1.3rem 1rem .7rem 1rem;
+  border: none;
+  border-radius: 5px;
+  
+}
+
+form .campo select {
+  flex: 1;
+  padding: 1.3rem 1rem .7rem 1rem;
+  border: none;
+  border-radius: 5px;
+  
+}
+
+form .campo input[type="file"] {
   flex: 1;
   padding: 1.3rem 1rem .7rem 1rem;
   border: none;

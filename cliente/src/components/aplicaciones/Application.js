@@ -1,12 +1,22 @@
-import React, { Fragment } from "react";
+import React, { Fragment,useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from 'sweetalert2';
 import clientAxios from '../../config/axios';
+import AuthContext from "../../context/autenticacion/authContext";
 
-const Application = ({aplicacion}) => {
+
+const Application = ({app,apps,carrito,agregarCarrito}) => {
+
+  const authContext = useContext(AuthContext);
+  const { autenticado,user } = authContext;
+
+  const {id,category,name,price,image} = app;
+
+  
 
   //eliminar aplicacion
   const deleteApp = id =>{
+    console.log(id);
     Swal.fire({
       title: '¿Estas seguro?',
       text: "Una Aplicacion eliminada no se puede recuperar",
@@ -24,7 +34,7 @@ const Application = ({aplicacion}) => {
             if(res.status === 200){
               Swal.fire(
                 'Eliminado!',
-                res.data.mensaje,
+                res.data.msg,
                 'success'
               )
             }
@@ -32,14 +42,25 @@ const Application = ({aplicacion}) => {
       }
     })
   }
-  const {id,category,name,price,image} = aplicacion;
 
+  //Agregar aplicacion al carrito
+  const selecionarApp = id =>{
+
+    const app = apps.filter(app => app.id === id);
+    localStorage.setItem('aplicacion', JSON.stringify(app))
+    agregarCarrito([
+      ...carrito,
+      ...app
+    ]);
+  }
 
   return (
+
+    
     <Fragment>
       <div className="entrada">
         
-        {aplicacion.image ? (
+        {app.image ? (
           <img src={`http://localhost:5000/${image}`}/>
         ) : null }
 
@@ -48,15 +69,37 @@ const Application = ({aplicacion}) => {
           <h3>{name}</h3>
 
           <p>Precio: <span>${price}</span></p>
-          <Link to={`/apps/edit/${id}`} className="boton">Editar</Link>
-          <Link to="#" className="boton">Comprar</Link>
-          <Link to={`/apps/${id}`} className="boton">Detalles</Link>
+
+          {autenticado && user.role === 'Desarrollador' ? (
+            
+            <Link to={`/apps/edit/${id}`} className="boton">Editar</Link>
+              
+          ) : null}
+
+          { autenticado && user.role === 'Cliente' ?
+
+          ( 
+          
           <button
+            className="boton"
+            onClick={() => selecionarApp(id)}
+          >Comprar</button>
+          
+          ) 
+          
+          : null}
+
+          <Link to={`/apps/detail/${id}`} className="boton">Detalles</Link>
+
+          {autenticado && user.role === 'Desarrollador' && user.id === app.userId ? (
+            <button
             className="boton"
             onClick={() => deleteApp(id)}
           >
             Eliminar
           </button>
+          ) : null}
+          
 
         </div>
         

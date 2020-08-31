@@ -1,0 +1,43 @@
+[
+    {
+        "id":1,
+        "nombre":"Red Social"
+    },
+    {
+        "id":2,
+        "nombre":"Noticias"
+    },
+    {
+        "id":3,
+        "nombre":"Deportes"
+    },
+    {
+        "id":4,
+        "nombre":"Cine"
+    },
+    {
+        "id":5,
+        "nombre":"Juegos"
+    },
+    {
+        "id":6,
+        "nombre":"Salud"
+    },
+    {
+        "id":7,
+        "nombre":"Literatura"
+    },
+    {
+        "id":8,
+        "nombre":"Educacion"
+    },
+    {
+        "id":9,
+        "nombre":"Eventos"
+    },
+    {
+        "id":10,
+        "nombre":"Gastronomia"
+    }
+
+]

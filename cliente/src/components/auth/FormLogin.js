@@ -34,6 +34,13 @@ const FormLogin = (props) => {
   const {email,password} = user;
 
   const onChange = e =>{
+
+    if(e.target.value !== ''){
+      e.target.nextElementSibling.classList.add('valido');
+    }else{
+      e.target.nextElementSibling.classList.remove('valido');
+    }
+
     setUser({
       ...user,
       [e.target.name]:e.target.value

@@ -1,26 +1,26 @@
-import React,{Fragment,useContext,useEffect} from 'react';
+import React,{Fragment,useContext,useEffect,useState} from 'react';
 import UserList from './UserList';
-
+import {Link} from 'react-router-dom';
 import AuthContext from '../../context/autenticacion/authContext';
 
 const Panel = () => {
 
     //extraer info de usuario
     const authContext = useContext(AuthContext);
-    const {user,userAutenticado} = authContext;
+    const {user,autenticado} = authContext;
 
-    useEffect(() =>{
-        userAutenticado();
-    },[])
 
     return ( 
         <Fragment>
             <main className="contenido-principal">
                 <div className="contenedor">
+                
                   
                     <div className="contenido-principal">
+                   
                         {user ? (
                             <h1>Bienvenido {user.username}</h1>
+                            
                         ) : null}
                             
                         <UserList
