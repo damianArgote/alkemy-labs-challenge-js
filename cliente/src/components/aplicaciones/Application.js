@@ -84,7 +84,6 @@ const Application = ({app}) => {
           
           <button
             className="boton"
-            onClick={() => selecionarApp(id)}
           >Comprar</button>
           
           ) 

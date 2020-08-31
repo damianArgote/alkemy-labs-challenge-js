@@ -28,6 +28,7 @@ const ListApps = () => {
                 {apps.map(app =>(
                     <Application
                         key={app.id}
+                        app={app}
                          
                     />
                     
