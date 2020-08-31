@@ -5,7 +5,7 @@ import clientAxios from '../../config/axios';
 import AuthContext from "../../context/autenticacion/authContext";
 
 
-const Application = ({app,apps,carrito,agregarCarrito}) => {
+const Application = ({app}) => {
 
   const authContext = useContext(AuthContext);
   const { autenticado,user } = authContext;
@@ -44,6 +44,7 @@ const Application = ({app,apps,carrito,agregarCarrito}) => {
   }
 
   //Agregar aplicacion al carrito
+  /*
   const selecionarApp = id =>{
 
     const app = apps.filter(app => app.id === id);
@@ -53,6 +54,7 @@ const Application = ({app,apps,carrito,agregarCarrito}) => {
       ...app
     ]);
   }
+  */
 
   return (
 

@@ -100,7 +100,15 @@ const FormApp = (props) => {
                     >
                         <option value="" selected>-Categoria-</option>
                         <option value="Red Social">Red Social</option>
+                        <option value="Noticias">Noticias</option>
+                        <option value="Deportes">Deportes</option>
+                        <option value="Cine">Cine</option>
+                        <option value="Salud">Salud</option>
+                        <option value="Literatura">Literatura</option>
+                        <option value="Educacion">Educacion</option>
                         <option value="Juegos">Juegos</option>
+                        <option value="Eventos">Eventos</option>
+                        <option value="Gastronomia">Gastronomia</option>
                     </select>
                     <label htmlFor="category"></label>
                 </div>

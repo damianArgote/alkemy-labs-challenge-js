@@ -1,13 +1,13 @@
 import React,{Fragment, useEffect, useState} from 'react';
 import Application from './Application';
-import Carrito from '../carrito/Carrito';
+//import Carrito from '../carrito/Carrito';
 import clientAxios from '../../config/axios';
 
 const ListApps = () => {
 
     const [apps,setApps] = useState([]);
 
-    const [carrito,agregarCarrito] = useState([]);
+    //const [carrito,agregarCarrito] = useState([]);
 
  
     useEffect(() =>{
@@ -24,19 +24,11 @@ const ListApps = () => {
     return ( 
 
         <Fragment>
-                <Carrito
-                carrito={carrito}
-                agregarCarrito={agregarCarrito}
-                />
-
+                
                 {apps.map(app =>(
                     <Application
                         key={app.id}
-                        apps={apps}
-                        app={app}
-                        carrito={carrito}
-                        agregarCarrito={agregarCarrito}
-                        
+                         
                     />
                     
                 ))}
